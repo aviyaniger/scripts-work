@@ -1,0 +1,11 @@
+#!/bin/bash
+
+if [[ -z $2 ]]
+then
+	echo "Usage: $0 id_rsa.pub file-to-encrypt"
+	exit 1
+fi
+
+ssh-keygen -f $1 -e -m PKCS8 > $1.pem
+
+cat $2 | openssl rsautl -encrypt -pubin -inkey $1.pem > $2.encrypted
